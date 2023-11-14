@@ -9,7 +9,6 @@ local on_attach = function(_, bufnr)
 
     nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
     nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
     nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
     nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
     nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -31,6 +30,16 @@ local on_attach = function(_, bufnr)
     vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
         vim.lsp.buf.format()
     end, { desc = 'Format current buffer with LSP' })
+
+    require('which-key').register {
+        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
+        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
+        ['<leader>g'] = { name = '[G]it', _ = 'which_key_ignore' },
+        ['<leader>h'] = { name = 'More git', _ = 'which_key_ignore' },
+        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
+        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
+        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+    }
 end
 
 local servers = {
@@ -45,6 +54,7 @@ local servers = {
             telemetry = { enable = false },
         },
     },
+    tsserver = {},
 }
 
 local config = function()
@@ -56,6 +66,7 @@ local config = function()
         ensure_installed = vim.tbl_keys(servers),
     }
     local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
     mason_lspconfig.setup_handlers {
         function(server_name)
             require('lspconfig')[server_name].setup {

@@ -1,4 +1,4 @@
-local search_current_buffer = function() 
+local search_current_buffer = function()
     local builtin = require("telescope.builtin")
     local themes = require("telescope.themes")
     builtin.current_buffer_fuzzy_find(themes.get_dropdown {
@@ -40,20 +40,20 @@ return {
     'nvim-telescope/telescope.nvim',
     branch = '0.1.x',
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      -- Fuzzy Finder Algorithm which requires local dependencies to be built.
-      -- Only load if `make` is available. Make sure you have the system
-      -- requirements installed.
-      {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        -- NOTE: If you are having trouble with this installation,
-        --       refer to the README for telescope-fzf-native for more instructions.
-        build = 'make',
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
+        'nvim-lua/plenary.nvim',
+        -- Fuzzy Finder Algorithm which requires local dependencies to be built.
+        -- Only load if `make` is available. Make sure you have the system
+        -- requirements installed.
+        {
+            'nvim-telescope/telescope-fzf-native.nvim',
+            -- NOTE: If you are having trouble with this installation,
+            --       refer to the README for telescope-fzf-native for more instructions.
+            build = 'make',
+            cond = function()
+                return vim.fn.executable 'make' == 1
+            end,
+        },
     },
     lazy = false,
     config = config
-  }
+}
