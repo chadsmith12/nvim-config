@@ -42,6 +42,9 @@ local on_attach = function(_, bufnr)
     }
 end
 
+local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
+local volar_path = mason_packages .. "/vue-language-server/node_modules/@vue/language-server"
+
 local servers = {
     -- gopls = {},
     -- rust_analyzer = {},
@@ -54,7 +57,24 @@ local servers = {
             telemetry = { enable = false },
         },
     },
-    tsserver = {},
+    tsserver = {
+        init_options = {
+            plugins = {
+                {
+                    name = "@vue/typescript-plugin",
+                    location = volar_path,
+                    languages = {"vue"}
+                },
+            },
+        },
+    },
+    volar = {
+        init_options = {
+            vue = {
+                hybridMode = false,
+            },
+        },
+    }
 }
 
 local config = function()
@@ -74,6 +94,7 @@ local config = function()
                 on_attach = on_attach,
                 settings = servers[server_name],
                 filetypes = (servers[server_name] or {}).filetypes,
+                init_options = (servers[server_name] or {}).init_options
             }
         end,
     }
